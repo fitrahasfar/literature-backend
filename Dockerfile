@@ -1,11 +1,35 @@
+# # Stage 1: Build
+# FROM node:14-alpine AS build
+# WORKDIR /app
+
+# # Copy only package files to install dependencies
+# COPY package*.json ./
+# RUN npm install -g nodemon
+# RUN npm install
+
+# # Copy the rest of the application code
+# COPY . .
+
+# # Stage 2: Run
+# FROM node:14-alpine
+# WORKDIR /app
+
+# # Copy the production build from the build stage
+# COPY --from=build /app /app
+
+# # Expose the application port
+# EXPOSE 5000
+
+# # Start the application
+# CMD ["npm", "start"]
+
 # Stage 1: Build
 FROM node:14-alpine AS build
 WORKDIR /app
 
-# Copy only package files to install dependencies
+# Copy package files and install only production dependencies
 COPY package*.json ./
-RUN npm install -g nodemon
-RUN npm install
+RUN npm install --only=production
 
 # Copy the rest of the application code
 COPY . .
@@ -14,11 +38,14 @@ COPY . .
 FROM node:14-alpine
 WORKDIR /app
 
-# Copy the production build from the build stage
+# Copy dependencies and application code from build stage
 COPY --from=build /app /app
 
 # Expose the application port
 EXPOSE 5000
+
+# Add environment variable support (optional)
+ENV NODE_ENV=production
 
 # Start the application
 CMD ["npm", "start"]
