@@ -2,7 +2,7 @@ def remote = 'remote'
 def server = 'ftrh4551@103.127.139.214'
 def directory = 'literature-backend'
 def branch = 'main'
-def image = 'fitrah4551/dumbflix:1.0.1'
+def image = 'fitrah4551/dumbflix:1.0.2'
 def container = 'backend'
 pipeline {
     agent any
