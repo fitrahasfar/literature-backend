@@ -29,7 +29,7 @@ WORKDIR /app
 
 # Copy package files and install only production dependencies
 COPY package*.json ./
-RUN npm i --only=production
+RUN npm i
 RUN npm i nodemon
 
 # Copy the rest of the application code
