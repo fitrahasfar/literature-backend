@@ -10,6 +10,8 @@ pipeline {
             steps {
                 sshagent([remote]){
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    cd
+                    cd ${directory}
                     git pull origin ${branch}
                     exit
                     EOF"""
