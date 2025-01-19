@@ -24,18 +24,19 @@
 # CMD ["npm", "start"]
 
 # Stage 1: Build
-FROM node:14-alpine AS build
+FROM node:16-alpine AS build
 WORKDIR /app
 
 # Copy package files and install only production dependencies
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm i --only=production
+RUN npm i nodemon
 
 # Copy the rest of the application code
 COPY . .
 
 # Stage 2: Run
-FROM node:14-alpine
+FROM node:16-alpine
 WORKDIR /app
 
 # Copy dependencies and application code from build stage
@@ -45,7 +46,7 @@ COPY --from=build /app /app
 EXPOSE 5000
 
 # Add environment variable support (optional)
-ENV NODE_ENV=production
+# ENV NODE_ENV=production
 
 # Start the application
 CMD ["npm", "start"]
