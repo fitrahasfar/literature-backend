@@ -67,7 +67,7 @@ COPY . .
 RUN npm install -g sequelize-cli
 
 # Jalankan migrasi database (production)
-RUN NODE_ENV=production npx sequelize-cli db:migrate
+RUN NODE_ENV=development npx sequelize-cli db:migrate
 
 # Stage 2: Run
 FROM node:16-alpine
