@@ -10,7 +10,7 @@ pipeline {
             steps {
                 sshagent([remote]){
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
-                    cd
+                    cd 
                     cd ${directory}
                     git pull origin ${branch}
                     exit
@@ -29,20 +29,28 @@ pipeline {
                 }
             }
         }
-        // stage('Test with Trivy') {
-        //     steps {
-        //         sh 'trivy image team/backend:staging'
-        //     }
-        // }
-        // stage('Push to Docker Hub') {
-        //     steps {
-        //         withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-        //             sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-        //             sh 'docker push team/backend:staging'
-        //             sh 'docker push team/frontend:staging'
-        //         }
-        //     }
-        // }
+        stage('Test with Trivy') {
+            steps {
+                sshagent([remote]){
+                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    cd ${directory}
+                    trivy image ${image}
+                    exit
+                    EOF"""
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                sshagent([remote]){
+                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    cd ${directory}
+                    docker push ${image}
+                    exit
+                    EOF"""
+                }
+            }
+        }
     }
     post {
         success {
