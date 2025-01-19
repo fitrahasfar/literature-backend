@@ -56,6 +56,10 @@ pipeline {
                 sshagent([remote]){
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
+                    if [ \$(docker ps -q -f name=${image}) ]; then
+                    docker stop ${image}
+                    docker rm ${image}
+                    fi
                     docker-compose up -d
                     exit
                     EOF"""
