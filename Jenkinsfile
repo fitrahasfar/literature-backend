@@ -4,6 +4,8 @@ def directory = 'literature-backend'
 def branch = 'main'
 def image = 'fitrah4551/dumbflix:1.0.2'
 def container = 'backend'
+def discordWebhook = 'https://discord.com/api/webhooks/1328944383306891304/L4iCDGeKjinwXSyUYSKIln1dv3MREXkgm-f9FGy7EmhLOae9qp6QbVL8APRJ41-LoKRQ'
+
 pipeline {
     agent any
     stages {
@@ -67,13 +69,42 @@ pipeline {
                 }
             }
         }
+        stage('Notify Discord') {
+            steps {
+                script {
+                    def message = """
+                    {
+                        "content": "🚀 Deployment Successful for **${image}** on ${server}"
+                    }
+                    """
+                    httpRequest(
+                        url: discordWebhook,
+                        httpMode: 'POST',
+                        contentType: 'APPLICATION_JSON',
+                        requestBody: message
+                    )
+                }
+            }
+        }
     }
     post {
         success {
             echo 'Staging Deployment Successful!'
         }
         failure {
-            echo 'Staging Deployment Failed!'
+            script {
+                def message = """
+                {
+                    "content": "❌ Deployment Failed for **${image}** on ${server}"
+                }
+                """
+                httpRequest(
+                    url: discordWebhook,
+                    httpMode: 'POST',
+                    contentType: 'APPLICATION_JSON',
+                    requestBody: message
+                )
+            }
         }
     }
 }
