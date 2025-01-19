@@ -57,7 +57,8 @@ WORKDIR /app
 
 # Copy package files dan install dependencies
 COPY package*.json ./
-RUN npm install --only=production
+RUN npm i
+RUN npm i nodemon
 
 # Copy semua kode aplikasi
 COPY . .
