@@ -28,7 +28,7 @@ FROM node:16-alpine AS build
 WORKDIR /app
 
 # Copy package files and install only production dependencies
-COPY package*.json ./
+COPY package.json ./
 RUN npm i
 RUN npm i nodemon
 
