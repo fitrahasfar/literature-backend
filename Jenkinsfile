@@ -9,7 +9,7 @@ pipeline {
         stage('Pull new code') {
             steps {
                 sshagent([remote]){
-                    sh """ssh -o StrictHostKeyChecking=no ${remote} << EOF
+                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     git pull origin ${branch}
                     exit
                     EOF"""
@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 sshagent([remote]){
-                    sh """ssh -o StrictHostKeyChecking=no ${remote} << EOF
+                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
                     docker build -t ${image} .
                     exit
