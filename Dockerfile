@@ -20,4 +20,4 @@ COPY --from=build /app /app
 EXPOSE 5000
 
 # Start the application
-CMD ["node", "index.js"]
+CMD ["npm", "start"]
