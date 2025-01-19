@@ -2,7 +2,7 @@ def remote = 'remote'
 def server = 'ftrh4551@103.127.139.214'
 def directory = 'literature-backend'
 def branch = 'main'
-def image = 'fitrah4551/dumbflix:1.0.3'
+def image = 'fitrah4551/dumbflix:1.0.4'
 def container = 'backend'
 def discordWebhook = 'https://discord.com/api/webhooks/1328944383306891304/L4iCDGeKjinwXSyUYSKIln1dv3MREXkgm-f9FGy7EmhLOae9qp6QbVL8APRJ41-LoKRQ'
 
@@ -74,7 +74,7 @@ pipeline {
                 script {
                     def message = """
                     {
-                        "content": "🚀 Deployment Successful for **${image}** on ${server}"
+                        "content": "Deployment Successful for **${image}** on ${server}"
                     }
                     """
                     httpRequest(
@@ -95,7 +95,7 @@ pipeline {
             script {
                 def message = """
                 {
-                    "content": "❌ Deployment Failed for **${image}** on ${server}"
+                    "content": "Deployment Failed for **${image}** on ${server}"
                 }
                 """
                 httpRequest(

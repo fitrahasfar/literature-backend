@@ -40,7 +40,7 @@ FROM node:16-alpine
 WORKDIR /app
 
 # Copy dependencies and application code from build stage
-COPY --from=build /app /app
+COPY --from=build /app .
 
 # Expose the application port
 EXPOSE 5000
