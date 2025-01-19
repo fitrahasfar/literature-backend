@@ -23,7 +23,7 @@ pipeline {
                 sshagent([remote]){
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
-                    docker build -t ${image} .
+                    docker build --no-cache -t ${image} .
                     exit
                     EOF"""
                 }
@@ -46,6 +46,17 @@ pipeline {
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
                     docker push ${image}
+                    exit
+                    EOF"""
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sshagent([remote]){
+                    sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    cd ${directory}
+                    docker-compose up -d
                     exit
                     EOF"""
                 }
