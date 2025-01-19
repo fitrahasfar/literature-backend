@@ -3,8 +3,6 @@ version: '3.8'
 services:
   backend:
     container_name: backend
-    build:
-      dockerfile: Dockerfile
-    image: fitrah4551/dumbflix:1.0.7
+    image: fitrah4551/dumbflix:1.0.7 # Gunakan nama image Docker yang valid
     ports:
       - "5000:5000"
