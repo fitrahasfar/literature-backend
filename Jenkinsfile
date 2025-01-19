@@ -57,13 +57,23 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent([remote]){
+                    // sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
+                    // cd ${directory}
+                    // if [ \$(docker ps -q -f name=${container}) ]; then
+                    // docker stop ${container}
+                    // docker rm ${container}
+                    // fi
+                    // docker-compose up -d
+                    // exit
+                    // EOF"""
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
                     if [ \$(docker ps -q -f name=${container}) ]; then
-                    docker stop ${container}
-                    docker rm ${container}
+                        docker stop ${container}
+                        docker rm ${container}
                     fi
-                    docker-compose up -d
+                    docker pull ${image} # Pull latest image from Docker Hub
+                    docker run -d --name ${container} -p 5000:5000 ${image} # Run the new image
                     exit
                     EOF"""
                 }
