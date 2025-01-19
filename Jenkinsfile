@@ -1,6 +1,6 @@
 def remote = 'remote'
 def server = 'ftrh4551@103.127.139.214'
-def directory = 'staging-backend'
+def directory = 'literature-backend'
 def branch = 'main'
 def image = 'fitrah4551/dumbflix:1.0.0'
 pipeline {
