@@ -3,6 +3,7 @@ def server = 'ftrh4551@103.127.139.214'
 def directory = 'literature-backend'
 def branch = 'main'
 def image = 'fitrah4551/dumbflix:1.0.1'
+def container = 'backend'
 pipeline {
     agent any
     stages {
@@ -56,9 +57,9 @@ pipeline {
                 sshagent([remote]){
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
-                    if [ \$(docker ps -q -f name=${image}) ]; then
-                    docker stop ${image}
-                    docker rm ${image}
+                    if [ \$(docker ps -q -f name=${container}) ]; then
+                    docker stop ${container}
+                    docker rm ${container}
                     fi
                     docker-compose up -d
                     exit

@@ -4,6 +4,7 @@ WORKDIR /app
 
 # Copy only package files to install dependencies
 COPY package*.json ./
+RUN npm install -g nodemon
 RUN npm install
 
 # Copy the rest of the application code
