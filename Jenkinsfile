@@ -2,7 +2,7 @@ def remote = 'remote'
 def server = 'ftrh4551@103.127.139.214'
 def directory = 'literature-backend'
 def branch = 'main'
-def image = 'fitrah4551/dumbflix:1.0.5'
+def image = 'fitrah4551/dumbflix:1.0.6'
 def container = 'backend'
 def discordWebhook = 'https://discord.com/api/webhooks/1328944383306891304/L4iCDGeKjinwXSyUYSKIln1dv3MREXkgm-f9FGy7EmhLOae9qp6QbVL8APRJ41-LoKRQ'
 
@@ -57,23 +57,13 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent([remote]){
-                    // sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
-                    // cd ${directory}
-                    // if [ \$(docker ps -q -f name=${container}) ]; then
-                    // docker stop ${container}
-                    // docker rm ${container}
-                    // fi
-                    // docker-compose up -d
-                    // exit
-                    // EOF"""
                     sh """ssh -o StrictHostKeyChecking=no ${server} << EOF
                     cd ${directory}
                     if [ \$(docker ps -q -f name=${container}) ]; then
-                        docker stop ${container}
-                        docker rm ${container}
+                    docker stop ${container}
+                    docker rm ${container}
                     fi
-                    docker pull ${image} # Pull latest image from Docker Hub
-                    docker run -d --name ${container} -p 5000:5000 ${image} # Run the new image
+                    docker-compose up -d
                     exit
                     EOF"""
                 }

@@ -23,30 +23,60 @@
 # # Start the application
 # CMD ["npm", "start"]
 
+# # Stage 1: Build
+# FROM node:16-alpine AS build
+# WORKDIR /app
+
+# # Copy package files and install only production dependencies
+# COPY package.json ./
+# RUN npm i
+# RUN npm i nodemon
+
+# # Copy the rest of the application code
+# COPY . .
+
+# # Stage 2: Run
+# FROM node:16-alpine
+# WORKDIR /app
+
+# # Copy dependencies and application code from build stage
+# COPY --from=build /app .
+
+# # Expose the application port
+# EXPOSE 5000
+
+# # Add environment variable support (optional)
+# # ENV NODE_ENV=production
+
+# # Start the application
+# CMD ["node", "server.js"]
+
 # Stage 1: Build
 FROM node:16-alpine AS build
 WORKDIR /app
 
-# Copy package files and install only production dependencies
-COPY package.json ./
-RUN npm i
-RUN npm i nodemon
+# Copy package files dan install dependencies
+COPY package*.json ./
+RUN npm install --only=production
 
-# Copy the rest of the application code
+# Copy semua kode aplikasi
 COPY . .
+
+# Install Sequelize CLI secara global
+RUN npm install -g sequelize-cli
+
+# Jalankan migrasi database (production)
+RUN NODE_ENV=production npx sequelize-cli db:migrate
 
 # Stage 2: Run
 FROM node:16-alpine
 WORKDIR /app
 
-# Copy dependencies and application code from build stage
+# Copy aplikasi dari tahap build
 COPY --from=build /app .
 
-# Expose the application port
+# Expose port aplikasi
 EXPOSE 5000
 
-# Add environment variable support (optional)
-# ENV NODE_ENV=production
-
-# Start the application
-CMD ["node", "server.js"]
+# Jalankan aplikasi
+CMD ["npm", "start"]
