@@ -2,7 +2,7 @@ def remote = 'remote'
 def server = 'ftrh4551@103.127.139.214'
 def directory = 'literature-backend'
 def branch = 'main'
-def image = 'fitrah4551/dumbflix:1.0.2'
+def image = 'fitrah4551/dumbflix:1.0.3'
 def container = 'backend'
 def discordWebhook = 'https://discord.com/api/webhooks/1328944383306891304/L4iCDGeKjinwXSyUYSKIln1dv3MREXkgm-f9FGy7EmhLOae9qp6QbVL8APRJ41-LoKRQ'
 
